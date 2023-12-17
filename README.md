@@ -214,6 +214,46 @@ JOIN
 
 ***12. Escriba un procedimiento almacenado o aplicación Java que consolide los totales de venta del punto anterior, garantizando tener solo los últimos 6 meses en dicho consolidado.***
 
+```
+CREATE OR REPLACE FUNCTION ConsolidarVentasUltimos6Meses()
+RETURNS TABLE (
+Empresa VARCHAR,
+Producto VARCHAR,
+Cantidad INT,
+ValorTotal NUMERIC
+) AS $$
+BEGIN
+RETURN QUERY
+SELECT
+E.nombre_empresa AS Empresa,
+P.nombre_producto AS Producto,
+SUM(DV.cantidad) AS Cantidad,
+SUM(DV.valor_total) AS ValorTotal
+FROM
+Empresa E
+JOIN
+Vendedor V ON E.Id_empresa = V.fk_id_empresa
+JOIN
+Venta Vt ON V.Id_vendedor = Vt.fk_id_vendedor
+JOIN
+DetalleVenta DV ON Vt.Id_venta = DV.fk_id_venta
+JOIN
+Producto P ON DV.fk_id_producto = P.Id_producto
+WHERE
+Vt.fecha >= CURRENT_DATE - INTERVAL '6 months'
+GROUP BY
+E.nombre_empresa, P.nombre_producto;
+
+    RETURN;
+END;
+$$ LANGUAGE plpgsql;
+```
+Uso:
+
+```
+SELECT * FROM ConsolidarVentasUltimos6Meses();
+```
+
 ***13. Para qué sirve el entityManager y cuáles son los métodos básicos que este provee.***
 
 La API de EntityManager se utiliza para crear y eliminar instancias de entidad persistentes, para encontrar entidades por su clave primaria y para realizar consultas sobre entidades. El conjunto de entidades que puede gestionar una instancia específica de EntityManager está definido por una unidad de persistencia. Una unidad de persistencia define el conjunto de todas las clases que están relacionadas o agrupadas por la aplicación y que deben estar ubicadas en su mapeo hacia una única base de datos.
