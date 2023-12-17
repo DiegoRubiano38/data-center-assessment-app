@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Venta de Recargas en Línea</title>
+</h:head>
+<h:body>
+    <h:form>
+        <h:panelGrid columns="2">
+            <h:outputLabel for="operador" value="Operador:" />
+            <h:inputText id="operador" value="#{recargaBean.operador}" />
+
+            <h:outputLabel for="valor" value="Valor de Recarga:" />
+            <h:inputText id="valor" value="#{recargaBean.valor}" />
+
+            <h:outputLabel for="vendedor" value="Vendedor:" />
+            <h:inputText id="vendedor" value="#{recargaBean.vendedor}" />
+
+            <h:commandButton value="Realizar Recarga" action="#{recargaBean.realizarRecarga}" />
+            <h:commandButton value="Consultar Recargas" action="#{recargaBean.obtenerRecargas}" />
+        </h:panelGrid>
+
+        <p:outputPanel id="panelToUpdate" layout="block">
+            <p:selectOneMenu value="#{recargaBean.operadorFiltro}">
+                <f:selectItem itemLabel="-- Seleccionar Operador --" itemValue="" />
+                <f:selectItems value="#{recargaBean.listaOperadores}" />
+                <p:ajax update="panelToUpdate" listener="#{recargaBean.filtroOperadorSeleccionado}" />
+            </p:selectOneMenu>
+
+            <br/>
+
+            <h:outputLabel value="Número de Recargas Hechas: " />
+            <h:outputText value="#{recargaBean.numeroRecargas}" />
+
+            <br/>
+
+            <h:outputLabel value="Valor Total de Recargas: " />
+            <h:outputText value="#{recargaBean.valorTotalRecargas}" />
+        </p:outputPanel>
+
+    </h:form>
+
+    <h:panelGrid columns="3">
+        <h:outputText value="Recargas Realizadas:" />
+        <p:dataTable var="recarga" value="#{recargaBean.recargas}">
+            <p:column headerText="Operador">
+                <h:outputText value="#{recarga.operador}" />
+            </p:column>
+            <p:column headerText="Valor">
+                <h:outputText value="#{recarga.valor}" />
+            </p:column>
+            <p:column headerText="Vendedor">
+                <h:outputText value="#{recarga.vendedor}" />
+            </p:column>
+        </p:dataTable>
+    </h:panelGrid>
+</h:body>
+</html>

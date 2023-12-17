@@ -1,0 +1,34 @@
+
+package exercise;
+
+import jakarta.annotation.ManagedBean;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Setter
+@Named
+@ViewScoped
+public class RecargaBean implements Serializable {
+
+    private String operador;
+    private String valor;
+    private String vendedor;
+    private List<Recarga> recargas = new ArrayList<>();
+
+    public void realizarRecarga() {
+        Recarga newRecharge = new Recarga(operador, valor, vendedor);
+        recargas.add(newRecharge);
+
+        operador = null;
+        valor = null;
+        vendedor = null;
+    }
+
+}
