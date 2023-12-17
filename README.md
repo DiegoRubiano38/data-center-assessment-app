@@ -35,8 +35,50 @@ El resultado de la línea en negrilla una vez ha sido ejecutado por completo el 
 * Se encuentra en la carpeta META-INF dentro del archivo ```.jar```.
 
 ***4. En una aplicación JSF donde se definen las reglas de navegación y Backing Bean.***
+ * Las reglas de navegación se definen generalmente en el archivo faces-config.xml. Este archivo se encuentra en el directorio WEB-INF del proyecto y contiene la configuración de la aplicación JSF, incluidas las reglas de navegación. 
+ * Los Backing Beans, son clases de Java que actúan como controladores en una aplicación JSF. Estas clases suelen tener la anotación @ManagedBean o @Named y se asocian con páginas JSF.
 
 ***5. Si se requiere un filtro en la aplicación para que cada vez que se solicite una página se verifique que el usuario esté autenticado que archivos debería construir y cuales debería modificar.***
+
+* Para Spring Security:
+  * Crear una clase de configuración que extienda WebSecurityConfigurerAdapter para configurar Spring Security.
+  * Crear una clase de configuración que permita protejer los endpoints requeridos, como:
+
+```
+@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
+public class SecurityConfig {
+
+    private final JwtAuthFilter jwtAuthFilter;
+    private final AuthenticationProvider authenticationProvider;
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+
+        httpSecurity
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("api/v1/auth/**").permitAll()
+                        .anyRequest().authenticated())
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(
+                                SessionCreationPolicy.STATELESS)
+                )
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+
+        return httpSecurity.build();
+    }
+}
+```
+
+* Para Java EE o Jakarta EE
+  * Crear una clase que implemente la interfaz ```javax.servlet.Filter```
+  * Configurar el filtro en el archivo ```web.xml``` o utilizando anotaciones ```@WebFilter```
+  * Configurar el ```login-config``` en ```web.xml```
+  * Proteger las paginas que estén dentro del patrón definido en la configuración de seguridad (por ejemplo, /protected/*) y que tengan las restricciones de seguridad configuradas.
 
 ***6. Mencione los 7 tipos de datos primitivos en Java***
 ```
@@ -56,8 +98,17 @@ public static void main(String[] args){
 El resultado de la ejecución del código anterior es: **Compilación Fallida.**
 
 ***8. En J2EE que es un EJB. Mencione los principales tipos.***
+* Un EJB es un componente de servidor que encapsula la lógica empresarial de una aplicación. Los EJBs proporcionan una forma estándar de implementar la lógica en aplicaciones empresariales distribuidas y gestionan aspectos como la transaccionalidad, la concurrencia y la persistencia de datos.
+* Los principales tipos son:
+  * Session Beans:
+    * Stateless Session Bean (SLSB)
+    * Stateful Session Bean (SFSB)
+  * Message-Driven Beans (MDB)
+  * Entity Beans
 
 ***9. En qué tipo de EJB se puede mapear una tabla de base de datos.***
+
+Entity Beans, usando la anotación ```@Entity``` en la clase.
 
 ***10. Defina y de un escenario de aplicación de los siguientes patrones de diseño:***
 
@@ -164,6 +215,18 @@ JOIN
 ***12. Escriba un procedimiento almacenado o aplicación Java que consolide los totales de venta del punto anterior, garantizando tener solo los últimos 6 meses en dicho consolidado.***
 
 ***13. Para qué sirve el entityManager y cuáles son los métodos básicos que este provee.***
+
+La API de EntityManager se utiliza para crear y eliminar instancias de entidad persistentes, para encontrar entidades por su clave primaria y para realizar consultas sobre entidades. El conjunto de entidades que puede gestionar una instancia específica de EntityManager está definido por una unidad de persistencia. Una unidad de persistencia define el conjunto de todas las clases que están relacionadas o agrupadas por la aplicación y que deben estar ubicadas en su mapeo hacia una única base de datos.
+
+* Métodos básicos:
+  * ```persist(Object entity)```
+  * ```merge(Object entity)```
+  * ```remove(Object entity)```
+  * ```find(Class<T> entityClass, Object primaryKey)```
+  * ```createQuery(String qlString)```
+  * ```flush()```
+  * ```clear()```
+  * ```refresh(Object entity)```
 
 ***14. Escriba 3 formas diferentes de recorrer un arreglo usando el lenguaje Java.***
 
