@@ -214,8 +214,10 @@ JOIN
 
 ***12. Escriba un procedimiento almacenado o aplicación Java que consolide los totales de venta del punto anterior, garantizando tener solo los últimos 6 meses en dicho consolidado.***
 
+Store procedure:
 ```
-CREATE OR REPLACE FUNCTION ConsolidarVentasUltimos6Meses()
+CREATE
+OR REPLACE FUNCTION ConsolidarVentasUltimos6Meses()
 RETURNS TABLE (
 Empresa VARCHAR,
 Producto VARCHAR,
@@ -224,29 +226,27 @@ ValorTotal NUMERIC
 ) AS $$
 BEGIN
 RETURN QUERY
-SELECT
-E.nombre_empresa AS Empresa,
-P.nombre_producto AS Producto,
-SUM(DV.cantidad) AS Cantidad,
-SUM(DV.valor_total) AS ValorTotal
-FROM
-Empresa E
-JOIN
-Vendedor V ON E.Id_empresa = V.fk_id_empresa
-JOIN
-Venta Vt ON V.Id_vendedor = Vt.fk_id_vendedor
-JOIN
-DetalleVenta DV ON Vt.Id_venta = DV.fk_id_venta
-JOIN
-Producto P ON DV.fk_id_producto = P.Id_producto
-WHERE
-Vt.fecha >= CURRENT_DATE - INTERVAL '6 months'
+SELECT E.nombre_empresa    AS Empresa,
+       P.nombre_producto   AS Producto,
+       SUM(DV.cantidad)    AS Cantidad,
+       SUM(DV.valor_total) AS ValorTotal
+FROM Empresa E
+         JOIN
+     Vendedor V ON E.Id_empresa = V.fk_id_empresa
+         JOIN
+     Venta Vt ON V.Id_vendedor = Vt.fk_id_vendedor
+         JOIN
+     DetalleVenta DV ON Vt.Id_venta = DV.fk_id_venta
+         JOIN
+     Producto P ON DV.fk_id_producto = P.Id_producto
+WHERE Vt.fecha >= CURRENT_DATE - INTERVAL '6 months'
 GROUP BY
-E.nombre_empresa, P.nombre_producto;
+    E.nombre_empresa, P.nombre_producto;
 
-    RETURN;
+RETURN;
 END;
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
 ```
 Uso:
 
@@ -325,6 +325,51 @@ La API de EntityManager se utiliza para crear y eliminar instancias de entidad p
 * Crear pantalla para la venta de recargas (no se requiere diseño)
 * Realice un diagrama relacional, diagrama de casos de uso, diagrama de secuencia y de clases que sirva como solución para dicha implementación.
 * Subir la solución a un repositorio GIT
+
+Herramientas utilizadas para ejecución:
+
+* PostgreSQL
+* Intellij Ultimate
+* Wildfly 30.0.1
+
+Configuración para ejecución:
+
+* Crear configuración para Wildfly server con el fin de correr el front JSF. Seleccionar ```jsf-assessment.war```
+* Crear configuración para correr el API Springboot generada en el folder ```data-center-api```
+* Crear BD ```assessment```. User BD configurado: postgres, Password: postgre. Realice los cambios pertinentes en ```application.yml``` 
+* Luego de ejecutar servicio Spring una vez, crear usuarios y operadores en base de datos con:
+
+```
+INSERT INTO operador (nombre)
+VALUES ('Tigo');
+
+INSERT INTO operador (nombre)
+VALUES ('Movistar');
+
+INSERT INTO operador (nombre)
+VALUES ('Comcel');
+
+INSERT INTO operador (nombre)
+VALUES ('Uff');
+```
+
+```
+INSERT INTO vendedor (nombre)
+VALUES ('Diego');
+
+INSERT INTO vendedor (nombre)
+VALUES ('Julian');
+```
+
+Ejecución:
+
+* Iniciar servicio backend Springboot.
+* Iniciar servicio Wildfly.
+* Utilice los ID's generados en base de datos respecto a vendedor y operador para crear recargas en el front.
+
+***Diagramas solicitados***
+
+--TO DO--
 
 ***Referencias***
 
