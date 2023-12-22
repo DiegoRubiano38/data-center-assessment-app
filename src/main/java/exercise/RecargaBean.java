@@ -28,6 +28,7 @@ public class RecargaBean implements Serializable {
     private Long vendedor;
     private Long operador;
     private String operadorFiltro;
+    private String numeroCelular;
     private Long numeroRecargas;
     private Double valorTotalRecargas;
     private List<String> listaOperadores;
@@ -48,7 +49,11 @@ public class RecargaBean implements Serializable {
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setDoOutput(true);
 
-            String jsonInputString = "{\"valor\":" + valor + ",\"vendedor\":{\"id\":" + vendedor + "},\"operador\":{\"id\":" + operador + "}}";
+            String jsonInputString = "{\"valor\":" + valor +
+                    ",\"vendedor\":{\"id\":" + vendedor +
+                    "},\"operador\":{\"id\":" + operador +
+                    "},\"numeroCelular\":\"" + numeroCelular +
+                    "\"}";
 
             try (OutputStream os = connection.getOutputStream()) {
                 byte[] input = jsonInputString.getBytes("utf-8");
@@ -71,6 +76,7 @@ public class RecargaBean implements Serializable {
         operador = null;
         valor = null;
         vendedor = null;
+        numeroCelular = null;
 
         obtenerRecargas();
 
@@ -129,7 +135,8 @@ public class RecargaBean implements Serializable {
         responseItem.forEach(responseItem1 -> {
                     Recarga recargaTemp = new Recarga(responseItem1.getOperador().getNombre(),
                             String.valueOf(responseItem1.getValor()),
-                            responseItem1.getVendedor().getNombre()
+                            responseItem1.getVendedor().getNombre(),
+                            responseItem1.getNumeroCelular()
                     );
                     recargas.add(recargaTemp);
                 }
@@ -138,6 +145,7 @@ public class RecargaBean implements Serializable {
         operador = null;
         valor = null;
         vendedor = null;
+        numeroCelular = null;
 
     }
 

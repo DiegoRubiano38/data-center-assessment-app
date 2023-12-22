@@ -369,7 +369,11 @@ Ejecución:
 
 ***Diagramas solicitados***
 
---TO DO--
+Diagrama Entidad-Relación:
+
+![Pseudocódigo](./img/ER.PNG)
+
+
 
 ***Referencias***
 

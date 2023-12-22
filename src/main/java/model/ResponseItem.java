@@ -8,4 +8,5 @@ public class ResponseItem{
 	private double valor;
 	private int id;
 	private Operador operador;
+	private String numeroCelular;
 }

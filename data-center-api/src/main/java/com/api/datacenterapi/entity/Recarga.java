@@ -19,6 +19,8 @@ public class Recarga {
 
     private Double valor;
 
+    private String numeroCelular;
+
     @ManyToOne
     @JoinColumn(name = "vendedor_id")
     private Vendedor vendedor;

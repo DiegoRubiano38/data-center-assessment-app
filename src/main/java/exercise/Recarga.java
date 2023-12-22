@@ -14,6 +14,6 @@ public class Recarga implements Serializable {
     private String operador;
     private String valor;
     private String vendedor;
-
+    private String numeroCelular;
 
 }

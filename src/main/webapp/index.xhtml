@@ -18,6 +18,9 @@
             <h:outputLabel for="vendedor" value="Vendedor:" />
             <h:inputText id="vendedor" value="#{recargaBean.vendedor}" />
 
+            <h:outputLabel for="numeroCelular" value="Número de Celular:" />
+            <h:inputText id="numeroCelular" value="#{recargaBean.numeroCelular}" />
+
             <h:commandButton value="Realizar Recarga" action="#{recargaBean.realizarRecarga}" />
             <h:commandButton value="Consultar Recargas" action="#{recargaBean.obtenerRecargas}" />
         </h:panelGrid>
@@ -42,7 +45,7 @@
 
     </h:form>
 
-    <h:panelGrid columns="3">
+    <h:panelGrid columns="4">
         <h:outputText value="Recargas Realizadas:" />
         <p:dataTable var="recarga" value="#{recargaBean.recargas}">
             <p:column headerText="Operador">
@@ -53,6 +56,9 @@
             </p:column>
             <p:column headerText="Vendedor">
                 <h:outputText value="#{recarga.vendedor}" />
+            </p:column>
+            <p:column headerText="Número de Celular">
+                <h:outputText value="#{recarga.numeroCelular}" />
             </p:column>
         </p:dataTable>
     </h:panelGrid>
