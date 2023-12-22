@@ -373,7 +373,17 @@ Diagrama Entidad-Relación:
 
 ![Pseudocódigo](./img/ER.PNG)
 
+Diagrama de casos de uso:
 
+* --TODO--
+
+Diagrama de secuencia
+
+* --TODO--
+
+Diagrama de clases:
+
+* --TODO--
 
 ***Referencias***
 
