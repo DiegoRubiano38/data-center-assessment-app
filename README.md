@@ -319,7 +319,7 @@ La API de EntityManager se utiliza para crear y eliminar instancias de entidad p
 </geografia>
 ```
 
-***17. Se requiere de una aplicación web (Angular, JSF) por medio de la cual se puedan vender recargas en línea. Se debe poder identificar en cualquier momento la cantidad y valor de recargas discriminada por operador (Tigo, Movistar, Comcel, Uff) y persona que realiza la venta.***
+***17. Se requiere de una aplicación web (Angular, JSF) por medio de la cual se puedan vender recargas en línea. Se debe poder identificar en cualquier momento la cantidad y valor de recargas discriminada por operator (Tigo, Movistar, Comcel, Uff) y persona que realiza la venta.***
 
 * Implementar APIs necesarias en Spring boot (Opcional)
 * Crear pantalla para la venta de recargas (no se requiere diseño)
@@ -340,24 +340,24 @@ Configuración para ejecución:
 * Luego de ejecutar servicio Spring una vez, crear usuarios y operadores en base de datos con:
 
 ```
-INSERT INTO operador (nombre)
+INSERT INTO operator (name)
 VALUES ('Tigo');
 
-INSERT INTO operador (nombre)
+INSERT INTO operator (name)
 VALUES ('Movistar');
 
-INSERT INTO operador (nombre)
+INSERT INTO operator (name)
 VALUES ('Comcel');
 
-INSERT INTO operador (nombre)
+INSERT INTO operator (name)
 VALUES ('Uff');
 ```
 
 ```
-INSERT INTO vendedor (nombre)
+INSERT INTO seller (name)
 VALUES ('Diego');
 
-INSERT INTO vendedor (nombre)
+INSERT INTO seller (name)
 VALUES ('Julian');
 ```
 
@@ -365,7 +365,7 @@ Ejecución:
 
 * Iniciar servicio backend Springboot.
 * Iniciar servicio Wildfly.
-* Utilice los ID's generados en base de datos respecto a vendedor y operador para crear recargas en el front.
+* Utilice los ID's generados en base de datos respecto a seller y operator para crear recargas en el front.
 
 ***Diagramas solicitados***
 

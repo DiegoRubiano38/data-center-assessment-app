@@ -1,5 +1,5 @@
 
-package exercise;
+package core;
 
 import jakarta.annotation.ManagedBean;
 import jakarta.faces.view.ViewScoped;
@@ -17,18 +17,18 @@ import java.util.List;
 @ViewScoped
 public class RecargaBean implements Serializable {
 
-    private String operador;
+    private String operator;
     private String valor;
-    private String vendedor;
+    private String seller;
     private List<Recarga> recargas = new ArrayList<>();
 
     public void realizarRecarga() {
-        Recarga newRecharge = new Recarga(operador, valor, vendedor);
+        Recarga newRecharge = new Recarga(operator, valor, seller);
         recargas.add(newRecharge);
 
-        operador = null;
+        operator = null;
         valor = null;
-        vendedor = null;
+        seller = null;
     }
 
 }

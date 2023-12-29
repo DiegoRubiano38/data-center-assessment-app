@@ -1,4 +1,4 @@
-package exercise;
+package core;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -8,11 +8,13 @@ import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
+import model.Recharge;
 import model.ResponseItem;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,45 +24,44 @@ import java.util.List;
 @Named
 @ViewScoped
 @ManagedBean
-public class RecargaBean implements Serializable {
+public class RechargeBean implements Serializable {
 
-    private Double valor;
-    private Long vendedor;
-    private Long operador;
-    private String operadorFiltro;
-    private String numeroCelular;
-    private Long numeroRecargas;
-    private Double valorTotalRecargas;
-    private List<String> listaOperadores;
-
-    private List<Recarga> recargas = new ArrayList<>();
+    private Double value;
+    private Long seller;
+    private Long operator;
+    private String operatorFilter;
+    private String cellphoneNumber;
+    private Long rechargeCount;
+    private Double totalRecharges;
+    private List<String> operatorList;
+    private List<Recharge> recharges = new ArrayList<>();
 
     @PostConstruct
     public void init() {
-        obtenerRecargas();
+        getAllRecharges();
     }
 
-    public void realizarRecarga() {
+    public void doRecharge() {
 
         try {
-            URL url = new URL("http://localhost:8081/api/v1/recargas");
+            URL url = new URL("http://localhost:8081/api/v1/recharge");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setDoOutput(true);
 
-            String jsonInputString = "{\"valor\":" + valor +
-                    ",\"vendedor\":{\"id\":" + vendedor +
-                    "},\"operador\":{\"id\":" + operador +
-                    "},\"numeroCelular\":\"" + numeroCelular +
+            String jsonInputString = "{\"value\":" + value +
+                    ",\"seller\":{\"id\":" + seller +
+                    "},\"operator\":{\"id\":" + operator +
+                    "},\"cellphoneNumber\":\"" + cellphoneNumber +
                     "\"}";
 
             try (OutputStream os = connection.getOutputStream()) {
-                byte[] input = jsonInputString.getBytes("utf-8");
+                byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
                 os.write(input, 0, input.length);
             }
 
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
                 StringBuilder response = new StringBuilder();
                 String responseLine;
                 while ((responseLine = br.readLine()) != null) {
@@ -73,28 +74,28 @@ public class RecargaBean implements Serializable {
             e.printStackTrace();
         }
 
-        operador = null;
-        valor = null;
-        vendedor = null;
-        numeroCelular = null;
+        operator = null;
+        value = null;
+        seller = null;
+        cellphoneNumber = null;
 
-        obtenerRecargas();
+        getAllRecharges();
 
     }
 
-    public List<ResponseItem> obtenerData() {
-        return obtenerData(null);
+    public List<ResponseItem> getData() {
+        return getData(null);
     }
 
-    public List<ResponseItem> obtenerData(String filtroOperador) {
+    public List<ResponseItem> getData(String operatorFilter) {
 
         StringBuilder response = new StringBuilder();
         String apiUrl;
 
-        recargas.clear();
+        recharges.clear();
 
-        if (filtroOperador == null) apiUrl = "http://localhost:8081/api/v1/recargas";
-        else apiUrl = "http://localhost:8081/api/v1/recargas?operador=" + filtroOperador;
+        if (operatorFilter == null) apiUrl = "http://localhost:8081/api/v1/recharge";
+        else apiUrl = "http://localhost:8081/api/v1/recharge?operator=" + operatorFilter;
 
         try {
 
@@ -117,7 +118,7 @@ public class RecargaBean implements Serializable {
                     System.out.println(response);
                 }
             } else {
-                System.out.println("Error al realizar la solicitud. Código de respuesta: " + responseCode);
+                System.out.println("Something wrong happened. Status code: " + responseCode);
             }
 
             connection.disconnect();
@@ -128,43 +129,45 @@ public class RecargaBean implements Serializable {
         return parseJsonArray(response.toString());
     }
 
-    public void obtenerRecargas() {
+    public void getAllRecharges() {
 
-        List<ResponseItem> responseItem = obtenerData();
+        List<ResponseItem> responseItem = getData();
 
         responseItem.forEach(responseItem1 -> {
-                    Recarga recargaTemp = new Recarga(responseItem1.getOperador().getNombre(),
-                            String.valueOf(responseItem1.getValor()),
-                            responseItem1.getVendedor().getNombre(),
-                            responseItem1.getNumeroCelular()
+                    Recharge tempRecharge = new Recharge(responseItem1.getOperator().getName(),
+                            String.valueOf(responseItem1.getValue()),
+                            responseItem1.getSeller().getName(),
+                            responseItem1.getCellphoneNumber()
                     );
-                    recargas.add(recargaTemp);
+                    recharges.add(tempRecharge);
                 }
         );
 
-        operador = null;
-        valor = null;
-        vendedor = null;
-        numeroCelular = null;
+        operator = null;
+        value = null;
+        seller = null;
+        cellphoneNumber = null;
 
     }
 
     private List<ResponseItem> parseJsonArray(String jsonArray) {
+
         Gson gson = new Gson();
         return gson.fromJson(jsonArray, new TypeToken<List<ResponseItem>>() {
         }.getType());
+
     }
 
-    public List<String> getListaOperadores() {
+    public List<String> getOperatorList() {
         return Arrays.asList("Tigo", "Movistar", "Comcel", "Uff");
     }
 
-    public void filtroOperadorSeleccionado() {
+    public void selectedOperatorFilter() {
 
-        List<ResponseItem> responseItem = obtenerData(operadorFiltro);
-        numeroRecargas = (long) responseItem.size();
-        valorTotalRecargas = 0.0;
-        responseItem.forEach(responseItemTemp -> valorTotalRecargas += responseItemTemp.getValor());
+        List<ResponseItem> responseItem = getData(operatorFilter);
+        rechargeCount = (long) responseItem.size();
+        totalRecharges = 0.0;
+        responseItem.forEach(responseItemTemp -> totalRecharges += responseItemTemp.getValue());
 
     }
 }

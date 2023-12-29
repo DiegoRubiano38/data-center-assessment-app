@@ -1,5 +1,6 @@
 package com.api.datacenterapi.entity;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,22 +12,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class Recarga {
+public class Seller {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double valor;
-
-    private String numeroCelular;
-
-    @ManyToOne
-    @JoinColumn(name = "vendedor_id")
-    private Vendedor vendedor;
-
-    @ManyToOne
-    @JoinColumn(name = "operador_id")
-    private Operador operador;
+    private String name;
 
 }

@@ -9,56 +9,56 @@
 <h:body>
     <h:form>
         <h:panelGrid columns="2">
-            <h:outputLabel for="operador" value="Operador:" />
-            <h:inputText id="operador" value="#{recargaBean.operador}" />
+            <h:outputLabel for="operator" value="Operador:" />
+            <h:inputText id="operator" value="#{rechargeBean.operator}" />
 
-            <h:outputLabel for="valor" value="Valor de Recarga:" />
-            <h:inputText id="valor" value="#{recargaBean.valor}" />
+            <h:outputLabel for="value" value="Valor de Recarga:" />
+            <h:inputText id="value" value="#{rechargeBean.value}" />
 
-            <h:outputLabel for="vendedor" value="Vendedor:" />
-            <h:inputText id="vendedor" value="#{recargaBean.vendedor}" />
+            <h:outputLabel for="seller" value="Vendedor:" />
+            <h:inputText id="seller" value="#{rechargeBean.seller}" />
 
-            <h:outputLabel for="numeroCelular" value="Número de Celular:" />
-            <h:inputText id="numeroCelular" value="#{recargaBean.numeroCelular}" />
+            <h:outputLabel for="cellphoneNumber" value="Número de Celular:" />
+            <h:inputText id="cellphoneNumber" value="#{rechargeBean.cellphoneNumber}" />
 
-            <h:commandButton value="Realizar Recarga" action="#{recargaBean.realizarRecarga}" />
-            <h:commandButton value="Consultar Recargas" action="#{recargaBean.obtenerRecargas}" />
+            <h:commandButton value="Realizar Recarga" action="#{rechargeBean.doRecharge}" />
+            <h:commandButton value="Consultar Recargas" action="#{rechargeBean.getAllRecharges}" />
         </h:panelGrid>
 
         <p:outputPanel id="panelToUpdate" layout="block">
-            <p:selectOneMenu value="#{recargaBean.operadorFiltro}">
+            <p:selectOneMenu value="#{rechargeBean.operatorFilter}">
                 <f:selectItem itemLabel="-- Seleccionar Operador --" itemValue="" />
-                <f:selectItems value="#{recargaBean.listaOperadores}" />
-                <p:ajax update="panelToUpdate" listener="#{recargaBean.filtroOperadorSeleccionado}" />
+                <f:selectItems value="#{rechargeBean.operatorList}" />
+                <p:ajax update="panelToUpdate" listener="#{rechargeBean.selectedOperatorFilter}" />
             </p:selectOneMenu>
 
             <br/>
 
             <h:outputLabel value="Número de Recargas Hechas: " />
-            <h:outputText value="#{recargaBean.numeroRecargas}" />
+            <h:outputText value="#{rechargeBean.rechargeCount}" />
 
             <br/>
 
             <h:outputLabel value="Valor Total de Recargas: " />
-            <h:outputText value="#{recargaBean.valorTotalRecargas}" />
+            <h:outputText value="#{rechargeBean.totalRecharges}" />
         </p:outputPanel>
 
     </h:form>
 
     <h:panelGrid columns="4">
         <h:outputText value="Recargas Realizadas:" />
-        <p:dataTable var="recarga" value="#{recargaBean.recargas}">
+        <p:dataTable var="recharge" value="#{rechargeBean.recharges}">
             <p:column headerText="Operador">
-                <h:outputText value="#{recarga.operador}" />
+                <h:outputText value="#{recharge.operator}" />
             </p:column>
             <p:column headerText="Valor">
-                <h:outputText value="#{recarga.valor}" />
+                <h:outputText value="#{recharge.value}" />
             </p:column>
             <p:column headerText="Vendedor">
-                <h:outputText value="#{recarga.vendedor}" />
+                <h:outputText value="#{recharge.seller}" />
             </p:column>
             <p:column headerText="Número de Celular">
-                <h:outputText value="#{recarga.numeroCelular}" />
+                <h:outputText value="#{recharge.cellphoneNumber}" />
             </p:column>
         </p:dataTable>
     </h:panelGrid>

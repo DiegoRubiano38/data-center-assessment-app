@@ -3,7 +3,7 @@ package model;
 import lombok.Data;
 
 @Data
-public class Vendedor{
+public class Seller {
 	private int id;
-	private String nombre;
+	private String name;
 }

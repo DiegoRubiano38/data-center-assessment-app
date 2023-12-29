@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class ResponseItem{
-	private Vendedor vendedor;
-	private double valor;
+	private Seller seller;
+	private double value;
 	private int id;
-	private Operador operador;
-	private String numeroCelular;
+	private Operator operator;
+	private String cellphoneNumber;
 }
