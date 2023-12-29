@@ -334,8 +334,8 @@ Herramientas utilizadas para ejecución:
 
 Configuración para ejecución:
 
-* Crear configuración para Wildfly server con el fin de correr el front JSF. Seleccionar ```jsf-assessment.war```
-* Crear configuración para correr el API Springboot generada en el folder ```data-center-api```
+* Crear configuración para Wildfly server con el fin de correr el front JSF. Seleccionar ```frontend.war```
+* Crear configuración para correr el API Springboot generada en el folder ```backend```
 * Crear BD ```assessment```. User BD configurado: postgres, Password: postgre. Realice los cambios pertinentes en ```application.yml``` 
 * Luego de ejecutar servicio Spring una vez, crear usuarios y operadores en base de datos con:
 
@@ -365,13 +365,13 @@ Ejecución:
 
 * Iniciar servicio backend Springboot.
 * Iniciar servicio Wildfly.
-* Utilice los ID's generados en base de datos respecto a seller y operator para crear recargas en el front.
+* Utilice los ID's generados en base de datos respecto a ```seller``` y ```operator``` para crear recargas en el front.
 
 ***Diagramas solicitados***
 
 Diagrama Entidad-Relación:
 
-![Pseudocódigo](./img/ER.PNG)
+![Diagrama entidad relacion](./img/ER.PNG)
 
 Diagrama de casos de uso:
 
